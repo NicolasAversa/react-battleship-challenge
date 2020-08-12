@@ -4,7 +4,7 @@ This project is being developed using Reactjs and Redux to validate the use of v
 
 ## Table of Contents
 
-- [Installation](#Installation)
+- [Installation and execution](#Installation-and-execution)
 - [Folder structure](#Folder-structure)
 
 ## Installation and execution
