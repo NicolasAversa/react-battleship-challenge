@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { hoverSquare } from '../../redux/actions';
 import Board from '../../components/Board/Board';
 
@@ -25,7 +26,12 @@ function Game(props) {
   return (
     <Container>
       <Row>
-        <Board board={board} playableBoard click={handleClick} />
+        <Col xs={6}>
+          <Board board={board} playableBoard click={handleClick} />
+        </Col>
+        <Col xs={6}>
+          <Board board={board} click={handleClick} />
+        </Col>
       </Row>
     </Container>
   );

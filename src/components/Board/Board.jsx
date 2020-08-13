@@ -2,7 +2,7 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import styles from './Board.module.css';
 
-import Square from '../Square/Square';
+import Cell from '../Cell/Cell';
 
 function Board(props) {
   const { board, playableBoard, click } = props;
@@ -15,12 +15,12 @@ function Board(props) {
   }
 
   const renderedBoard = selectedBoard.map((square) => (
-    <Square x={square.x} y={square.y} key={square.id} click={click} board={selectedBoard} />
+    <Cell x={square.x} y={square.y} key={square.id} click={click} board={selectedBoard} />
   ));
 
   return (
     <Col>
-      <div className={styles.gameBoard}>{renderedBoard}</div>
+      <div>{renderedBoard}</div>
     </Col>
   );
 }

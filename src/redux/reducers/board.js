@@ -19,8 +19,8 @@ const fillBoard = (horizontalTiles, verticalTiles) => {
 };
 
 const initialState = {
-  playerBoard: fillBoard(5, 5),
-  cpuBoard: fillBoard(5, 5),
+  playerBoard: fillBoard(10, 10),
+  cpuBoard: fillBoard(10, 10),
 };
 
 export default function reducer(state = initialState, action) {
