@@ -1,14 +1,17 @@
 import React from 'react';
-import { Fab } from 'ui-neumorphism';
+import Col from 'react-bootstrap/Col';
+import { Button } from 'ui-neumorphism';
 import styles from './Cell.module.css';
 
 function Square(props) {
   const { x, y, board, click } = props;
 
   return (
-    <Fab text={false} size="medium" rounded onClick={() => click(board, x, y)} className="m-2">
-      {x.toString() + y.toString()}
-    </Fab>
+    <Col>
+      <Button size="large" onClick={() => click(board, x, y)} className={`${styles.cell} m-2`}>
+        <span className="material-icons">help_outline</span>
+      </Button>
+    </Col>
   );
 }
 

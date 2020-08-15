@@ -1,6 +1,6 @@
 import React from 'react';
-import Col from 'react-bootstrap/Col';
-import styles from './Board.module.css';
+import Row from 'react-bootstrap/Row';
+import { Card } from 'ui-neumorphism';
 
 import Cell from '../Cell/Cell';
 
@@ -19,9 +19,9 @@ function Board(props) {
   ));
 
   return (
-    <Col>
-      <div>{renderedBoard}</div>
-    </Col>
+    <>
+      <Row className="no-gutters">{renderedBoard}</Row>
+    </>
   );
 }
 

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import PlayerHeader from '../../components/PlayerHeader/PlayerHeader';
 import { hoverSquare } from '../../redux/actions';
 import Board from '../../components/Board/Board';
 
@@ -26,6 +27,11 @@ function Game(props) {
   return (
     <Container>
       <Row>
+        <Col xs={12}>
+          <h1>BATTLEFHIP</h1>
+        </Col>
+        <PlayerHeader title="Player board" />
+        <PlayerHeader title="CPU board" />
         <Col xs={6}>
           <Board board={board} playableBoard click={handleClick} />
         </Col>
