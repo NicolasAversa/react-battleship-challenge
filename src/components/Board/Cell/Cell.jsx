@@ -1,6 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'ui-neumorphism';
 import styles from './Cell.module.css';
+
+const propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  status: PropTypes.string.isRequired,
+  board: PropTypes.arrayOf(PropTypes.array).isRequired,
+  click: PropTypes.func.isRequired,
+};
 
 function Cell(props) {
   const { x, y, status, board, click } = props;
@@ -17,5 +26,7 @@ function Cell(props) {
     </Card>
   );
 }
+
+Cell.propTypes = propTypes;
 
 export default Cell;

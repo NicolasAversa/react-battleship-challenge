@@ -1,27 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import PlayerHeader from '../../components/PlayerHeader/PlayerHeader';
 import { updateCellState } from '../../redux/actions';
 import Board from '../../components/Board/Board';
+
+const propTypes = {
+  board: PropTypes.objectOf(PropTypes.array).isRequired,
+  updateCellState: PropTypes.func.isRequired,
+};
 
 function Game(props) {
   const { board, updateCellState } = props;
 
   const clickCellHandler = (selectedBoard, x, y) => {
-    const newBoard = selectedBoard.map((cellGroup) => {
-      return cellGroup.map((cell) => {
-        return {
-          ...cell,
-          status: cell.y === y && cell.x >= x && cell.x <= x + 3 ? 'occupied' : 'free',
-        };
-      });
-    });
+    const newBoard = selectedBoard.map((cellGroup) =>
+      cellGroup.map((cell) => ({
+        ...cell,
+        status: cell.y === y && cell.x >= x && cell.x <= x + 3 ? 'occupied' : 'free',
+      })),
+    );
 
-    console.log(newBoard);
     updateCellState('playerBoard', newBoard);
   };
 
@@ -31,8 +33,6 @@ function Game(props) {
         <Col xs={12}>
           <h1>BATTLESHIP</h1>
         </Col>
-        <PlayerHeader title="Player board" />
-        <PlayerHeader title="CPU board" />
         <Board board={board} playableBoard click={clickCellHandler} />
         <Board board={board} click={clickCellHandler} />
       </Row>
@@ -40,6 +40,7 @@ function Game(props) {
   );
 }
 
+Game.propTypes = propTypes;
 const mapStateToProps = (state) => ({ board: state.board });
 
 export default connect(mapStateToProps, { updateCellState })(Game);

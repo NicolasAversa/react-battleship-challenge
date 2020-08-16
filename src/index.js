@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable import/extensions */
 import React from 'react';
 import ReactDOM from 'react-dom';
+// CSS Libraries
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-
+// Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
-import App from './containers/App/App.jsx';
+import App from './containers/App/App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
