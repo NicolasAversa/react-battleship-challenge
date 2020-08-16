@@ -1,7 +1,5 @@
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import { Card } from 'ui-neumorphism';
-
+import Col from 'react-bootstrap/Col';
 import Cell from '../Cell/Cell';
 
 function Board(props) {
@@ -14,14 +12,25 @@ function Board(props) {
     selectedBoard = board.cpuBoard;
   }
 
-  const renderedBoard = selectedBoard.map((square) => (
-    <Cell x={square.x} y={square.y} key={square.id} click={click} board={selectedBoard} />
+  const renderedBoard = selectedBoard.map((cellGroup, index) => (
+    <div key={index} className="mb-3 d-flex flex-nowrap">
+      {cellGroup.map((cell) => (
+        <Cell
+          x={cell.x}
+          y={cell.y}
+          key={cell.id}
+          click={click}
+          status={cell.status}
+          board={selectedBoard}
+        />
+      ))}
+    </div>
   ));
 
   return (
-    <>
-      <Row className="no-gutters">{renderedBoard}</Row>
-    </>
+    <Col xs={12} sm={12} md={12} lg={6} xl={6}>
+      {renderedBoard}
+    </Col>
   );
 }
 

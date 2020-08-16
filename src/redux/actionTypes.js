@@ -1,1 +1,1 @@
-export const HOVER_SQUARE = 'HOVER_SQUARE';
+export const CLICK_CELL = 'CLICK_CELL';

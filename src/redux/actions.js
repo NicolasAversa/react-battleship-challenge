@@ -1,5 +1,6 @@
-import { HOVER_SQUARE } from './actionTypes';
+import { CLICK_CELL } from './actionTypes';
 
-export const hoverSquare = (position, selectedBoard, shipSize) => {
-  return { type: HOVER_SQUARE, payload: { position, selectedBoard, shipSize } };
-};
+export const updateCellState = (selectedBoard, newStateData) => ({
+  type: CLICK_CELL,
+  payload: { selectedBoard, newStateData },
+});

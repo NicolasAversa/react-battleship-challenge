@@ -1,18 +1,21 @@
 import React from 'react';
-import Col from 'react-bootstrap/Col';
-import { Button } from 'ui-neumorphism';
+import { Card } from 'ui-neumorphism';
 import styles from './Cell.module.css';
 
-function Square(props) {
-  const { x, y, board, click } = props;
+function Cell(props) {
+  const { x, y, status, board, click } = props;
 
   return (
-    <Col>
-      <Button size="large" onClick={() => click(board, x, y)} className={`${styles.cell} m-2`}>
-        <span className="material-icons">help_outline</span>
-      </Button>
-    </Col>
+    <Card inset={status === 'occupied'} className={`w-100 m-2 position-relative ${styles.card}`}>
+      <button
+        type="button"
+        onClick={() => click(board, x, y)}
+        className={`w-100 h-100 border-0 position-absolute d-flex align-items-center justify-content-center ${styles.button}`}
+      >
+        <span className="material-icons"></span>
+      </button>
+    </Card>
   );
 }
 
-export default Square;
+export default Cell;

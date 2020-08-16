@@ -5,39 +5,36 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PlayerHeader from '../../components/PlayerHeader/PlayerHeader';
-import { hoverSquare } from '../../redux/actions';
+import { updateCellState } from '../../redux/actions';
 import Board from '../../components/Board/Board';
 
 function Game(props) {
-  const { board, hoverSquare } = props;
+  const { board, updateCellState } = props;
 
-  const handleClick = (selectedBoard, x, y) => {
-    hoverSquare(11, 'playerBoard');
-    let selectedPos = selectedBoard.filter((cell) => {
-      return cell.x === x && cell.y === y;
+  const clickCellHandler = (selectedBoard, x, y) => {
+    const newBoard = selectedBoard.map((cellGroup) => {
+      return cellGroup.map((cell) => {
+        return {
+          ...cell,
+          status: cell.y === y && cell.x >= x && cell.x <= x + 3 ? 'occupied' : 'free',
+        };
+      });
     });
 
-    const otherPoses = selectedBoard.filter((cell) => {
-      return cell.y === y && cell.x >= x + 1;
-    });
-
-    selectedPos = selectedPos.concat(otherPoses);
+    console.log(newBoard);
+    updateCellState('playerBoard', newBoard);
   };
-  console.log(board);
+
   return (
-    <Container>
+    <Container fluid>
       <Row>
         <Col xs={12}>
-          <h1>BATTLEFHIP</h1>
+          <h1>BATTLESHIP</h1>
         </Col>
         <PlayerHeader title="Player board" />
         <PlayerHeader title="CPU board" />
-        <Col xs={6}>
-          <Board board={board} playableBoard click={handleClick} />
-        </Col>
-        <Col xs={6}>
-          <Board board={board} click={handleClick} />
-        </Col>
+        <Board board={board} playableBoard click={clickCellHandler} />
+        <Board board={board} click={clickCellHandler} />
       </Row>
     </Container>
   );
@@ -45,4 +42,4 @@ function Game(props) {
 
 const mapStateToProps = (state) => ({ board: state.board });
 
-export default connect(mapStateToProps, { hoverSquare })(Game);
+export default connect(mapStateToProps, { updateCellState })(Game);
