@@ -8,8 +8,10 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case CLICK_CELL:
-      return { ...state, [action.payload.selectedBoard]: action.payload.newStateData };
+    case CLICK_CELL: {
+      const { selectedBoard, newStateData } = action.payload;
+      return { ...state, [selectedBoard]: newStateData };
+    }
     default:
       return state;
   }

@@ -1,1 +1,2 @@
 export const CLICK_CELL = 'CLICK_CELL';
+export const CHANGE_PLAYER_NAME = 'CHANGE_PLAYER_NAME';

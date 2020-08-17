@@ -8,7 +8,7 @@ const fillBoard = (horizontalTiles, verticalTiles) => {
         x: i,
         y: j,
         status: 'free',
-        occupiedBy: '',
+        occupiedBy: 'water',
         hover: false,
       };
     }

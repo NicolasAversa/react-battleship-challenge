@@ -14,21 +14,24 @@ const propTypes = {
 };
 
 function Game(props) {
-  const { board, updateCellState } = props;
+  const { board } = props;
 
-  const clickCellHandler = (selectedBoard, x, y) => {
-    const newBoard = selectedBoard.map((cellGroup) =>
+  const clickCellHandler = (boardKey, boardData, x, y) => {
+    const newBoard = boardData.map((cellGroup) =>
       cellGroup.map((cell) => ({
         ...cell,
-        status: cell.y === y && cell.x >= x && cell.x <= x + 3 ? 'occupied' : 'free',
+        status:
+          (cell.y === y && cell.x >= x && cell.x <= x + 3) || cell.status === 'occupied'
+            ? 'occupied'
+            : 'free',
       })),
     );
 
-    updateCellState('playerBoard', newBoard);
+    props.updateCellState(boardKey, newBoard);
   };
 
   return (
-    <Container fluid>
+    <Container>
       <Row>
         <Col xs={12}>
           <h1>BATTLESHIP</h1>
