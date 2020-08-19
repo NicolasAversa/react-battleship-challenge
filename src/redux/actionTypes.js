@@ -1,2 +1,3 @@
-export const CLICK_CELL = 'CLICK_CELL';
 export const CHANGE_PLAYER_NAME = 'CHANGE_PLAYER_NAME';
+export const SHIP_POSITIONING = 'SHIP_POSITIONING';
+export const CLICK_CELL = 'CLICK_CELL';

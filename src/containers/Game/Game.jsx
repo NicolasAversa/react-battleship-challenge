@@ -10,11 +10,12 @@ import Board from '../../components/Board/Board';
 
 const propTypes = {
   board: PropTypes.objectOf(PropTypes.array).isRequired,
+  playerData: PropTypes.objectOf(PropTypes.object).isRequired,
   updateCellState: PropTypes.func.isRequired,
 };
 
 function Game(props) {
-  const { board } = props;
+  const { board, playerData } = props;
 
   const clickCellHandler = (boardKey, boardData, x, y) => {
     const newBoard = boardData.map((cellGroup) =>
@@ -36,7 +37,12 @@ function Game(props) {
         <Col xs={12}>
           <h1>BATTLESHIP</h1>
         </Col>
-        <Board board={board} playableBoard click={clickCellHandler} />
+        <Board
+          board={board}
+          playableBoard
+          playerName={`${playerData.name}'s board`}
+          click={clickCellHandler}
+        />
         <Board board={board} click={clickCellHandler} />
       </Row>
     </Container>
@@ -44,6 +50,9 @@ function Game(props) {
 }
 
 Game.propTypes = propTypes;
-const mapStateToProps = (state) => ({ board: state.board });
+const mapStateToProps = (state) => ({
+  board: state.board,
+  playerData: state.playersData.playerData,
+});
 
 export default connect(mapStateToProps, { updateCellState })(Game);

@@ -18,7 +18,7 @@ const defaultProps = {
 };
 
 function Board(props) {
-  const { board, playableBoard, playerName, click } = props;
+  const { board, playableBoard, playerName, click, mouseover } = props;
 
   let selectedBoardKey = '';
   let selectedBoardData = [];
@@ -37,6 +37,7 @@ function Board(props) {
           x={cell.x}
           y={cell.y}
           key={cell.id}
+          mouseover={mouseover}
           click={click}
           status={cell.status}
           boardKey={selectedBoardKey}
