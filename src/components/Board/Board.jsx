@@ -5,32 +5,30 @@ import Cell from './Cell/Cell';
 import PlayerHeader from './PlayerHeader/PlayerHeader';
 
 const propTypes = {
-  board: PropTypes.objectOf(PropTypes.array),
+  board: PropTypes.arrayOf(PropTypes.array),
   playableBoard: PropTypes.bool,
-  playerName: PropTypes.string,
+  playerName: PropTypes.string.isRequired,
   click: PropTypes.func.isRequired,
+  mouseover: PropTypes.func,
 };
 
 const defaultProps = {
   board: [],
   playableBoard: false,
-  playerName: 'CPU board',
+  mouseover: () => {},
 };
 
 function Board(props) {
   const { board, playableBoard, playerName, click, mouseover } = props;
 
-  let selectedBoardKey = '';
-  let selectedBoardData = [];
+  let boardKey = '';
   if (playableBoard) {
-    selectedBoardKey = 'playerBoard';
-    selectedBoardData = board.playerBoard;
+    boardKey = 'player';
   } else {
-    selectedBoardKey = 'cpuBoard';
-    selectedBoardData = board.cpuBoard;
+    boardKey = 'cpu';
   }
 
-  const renderedBoard = selectedBoardData.map((cellGroup, index) => (
+  const renderedBoard = board.map((cellGroup, index) => (
     <div key={index} className="d-flex flex-nowrap">
       {cellGroup.map((cell) => (
         <Cell
@@ -40,8 +38,8 @@ function Board(props) {
           mouseover={mouseover}
           click={click}
           status={cell.status}
-          boardKey={selectedBoardKey}
-          boardData={selectedBoardData}
+          boardKey={boardKey}
+          board={board}
         />
       ))}
     </div>
@@ -49,7 +47,7 @@ function Board(props) {
 
   return (
     <Col xs={12} sm={12} md={12} lg={6} xl={6}>
-      <PlayerHeader title={playerName} />
+      <PlayerHeader title={`${playerName}'s board`} />
       {renderedBoard}
     </Col>
   );
@@ -58,4 +56,4 @@ function Board(props) {
 Board.propTypes = propTypes;
 Board.defaultProps = defaultProps;
 
-export default Board;
+export default React.memo(Board);

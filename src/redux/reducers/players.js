@@ -1,22 +1,22 @@
-import { CHANGE_PLAYER_NAME, SHIP_POSITIONING } from '../actionTypes';
+import { UPDATE_PLAYER_NAME, SHIP_POSITIONING } from '../actionTypes';
 
 const initialState = {
-  playerData: {
+  player: {
     name: 'Player',
     ships: [
-      { name: 'Carrier', size: 4, quantity: 0 },
+      { name: 'Carrier', size: 4, quantity: 1 },
       { name: 'Submarine', size: 2, quantity: 1 },
       { name: 'Cruiser', size: 3, quantity: 3 },
     ],
   },
-  cpuData: {},
+  cpu: {},
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case CHANGE_PLAYER_NAME: {
+    case UPDATE_PLAYER_NAME: {
       const { newName } = action.payload;
-      return { ...state, playerData: { ...state.playerData, name: newName } };
+      return { ...state, player: { ...state.player, name: newName } };
     }
     case SHIP_POSITIONING: {
       return {};

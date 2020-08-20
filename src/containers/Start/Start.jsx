@@ -3,47 +3,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // Lodash utilities
-// eslint-disable-next-line import/no-extraneous-dependencies
 import every from 'lodash/every';
 import chunk from 'lodash/chunk';
 // Bootstrap components
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 // Redux actions
-import { changePlayerName, updateCellState } from '../../redux/actions';
+import { updatePlayerName, updateCellState } from '../../redux/actions';
+// Helper actions
+import { getCurrentShip, getSelectedCells } from '../../helpers/gameLogic';
 // Custom components
 import Board from '../../components/Board/Board';
 import PlayerForm from '../../components/PlayerForm/PlayerForm';
 
 const propTypes = {
-  board: PropTypes.objectOf(PropTypes.array).isRequired,
-  playerData: PropTypes.objectOf(PropTypes.object).isRequired,
-  changePlayerName: PropTypes.func.isRequired,
+  playerBoard: PropTypes.arrayOf(PropTypes.array).isRequired,
+  playerName: PropTypes.string.isRequired,
+  playerInformation: PropTypes.shape({
+    name: PropTypes.string,
+    ships: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  updatePlayerName: PropTypes.func.isRequired,
+  updateCellState: PropTypes.func.isRequired,
 };
 
 function Start(props) {
-  const { board, playerData } = props;
+  const { playerBoard, playerName, playerInformation } = props;
 
-  const changeNameHandler = (event) => {
-    props.changePlayerName(event.value);
+  const nameChangeHandler = (event) => {
+    props.updatePlayerName(event.value);
   };
 
-  const mouseOverCellHandler = (boardKey, boardData, x, y) => {
+  const mouseOverCellHandler = (boardKey, board, x, y) => {
     // Checking the data for the next ship to positioning
-    const currentShip = playerData.ships.find((ship) => {
-      if (ship.quantity > 0) {
-        return ship;
-      }
-      return null;
-    });
+    const currentShip = getCurrentShip(playerInformation.ships);
     // If there are not more ships available then exit the function
     if (!currentShip) {
       return;
     }
     // Filtering of the selected cells
-    const selectedCells = boardData
-      .flat()
-      .filter((cell) => cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1);
+    const selectedCells = getSelectedCells(board, x, y, currentShip.size);
     // Checking if there is space available and all cells are free
     if (!every(selectedCells, ['status', 'free']) || selectedCells.length < currentShip.size) {
       console.log("Can't position current ship here");
@@ -51,10 +50,10 @@ function Start(props) {
     }
     console.log('Can position current ship here');
     // Creation of the new bidimensional array with the hovered cells actives
-    let newBoard = boardData.flat().map((cell) => ({
+    let newBoard = board.flat().map((cell) => ({
       ...cell,
       status:
-        cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1 ? 'occupied' : 'free',
+        cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1 ? 'selected' : 'free',
       occupiedBy:
         cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1
           ? currentShip.name
@@ -70,13 +69,13 @@ function Start(props) {
     <Container className="h-100">
       <Row className="h-100 d-flex align-items-center">
         <Board
-          board={board}
+          board={playerBoard}
           mouseover={mouseOverCellHandler}
           click={positionShipHandler}
-          playerName={`${playerData.name}'s board`}
+          playerName={playerName}
           playableBoard
         />
-        <PlayerForm change={changeNameHandler} />
+        <PlayerForm change={nameChangeHandler} />
       </Row>
     </Container>
   );
@@ -85,8 +84,9 @@ function Start(props) {
 Start.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
-  board: state.board,
-  playerData: state.playersData.playerData,
+  playerBoard: state.boards.player,
+  playerInformation: state.players.player,
+  playerName: state.players.player.name,
 });
 
-export default connect(mapStateToProps, { changePlayerName, updateCellState })(Start);
+export default connect(mapStateToProps, { updatePlayerName, updateCellState })(Start);

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import board from './board';
-import playersData from './playersData';
+import boards from './boards';
+import players from './players';
 
-export default combineReducers({ board, playersData });
+export default combineReducers({ boards, players });

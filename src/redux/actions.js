@@ -1,11 +1,11 @@
-import { CLICK_CELL, CHANGE_PLAYER_NAME } from './actionTypes';
+import { UPDATE_BOARD, UPDATE_PLAYER_NAME } from './actionTypes';
 
-export const updateCellState = (selectedBoard, newStateData) => ({
-  type: CLICK_CELL,
-  payload: { selectedBoard, newStateData },
+export const updateCellState = (boardKey, newBoard) => ({
+  type: UPDATE_BOARD,
+  payload: { boardKey, newBoard },
 });
 
-export const changePlayerName = (newName) => ({
-  type: CHANGE_PLAYER_NAME,
+export const updatePlayerName = (newName) => ({
+  type: UPDATE_PLAYER_NAME,
   payload: { newName },
 });

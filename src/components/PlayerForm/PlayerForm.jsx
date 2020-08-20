@@ -13,4 +13,4 @@ function PlayerForm(props) {
   );
 }
 
-export default PlayerForm;
+export default React.memo(PlayerForm);

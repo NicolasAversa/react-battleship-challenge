@@ -16,4 +16,4 @@ function Jumbotron() {
   );
 }
 
-export default Jumbotron;
+export default React.memo(Jumbotron);

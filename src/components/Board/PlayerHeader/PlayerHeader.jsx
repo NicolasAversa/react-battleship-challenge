@@ -18,4 +18,4 @@ function PlayerHeader(props) {
 
 PlayerHeader.propTypes = propTypes;
 
-export default PlayerHeader;
+export default React.memo(PlayerHeader);
