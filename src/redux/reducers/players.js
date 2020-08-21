@@ -1,4 +1,4 @@
-import { UPDATE_PLAYER_NAME, SHIP_POSITIONING } from '../actionTypes';
+import { UPDATE_PLAYER_NAME, UPDATE_SHIP_QUANTITY } from '../actionTypes';
 
 const initialState = {
   player: {
@@ -18,8 +18,12 @@ export default function reducer(state = initialState, action) {
       const { newName } = action.payload;
       return { ...state, player: { ...state.player, name: newName } };
     }
-    case SHIP_POSITIONING: {
-      return {};
+    case UPDATE_SHIP_QUANTITY: {
+      const { newShips } = action.payload;
+      return {
+        ...state,
+        player: { ...state.player, ships: newShips },
+      };
     }
     default:
       return state;

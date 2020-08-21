@@ -2,16 +2,20 @@ import React from 'react';
 // Redux setup
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// Lodash utilities
-import every from 'lodash/every';
-import chunk from 'lodash/chunk';
 // Bootstrap components
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 // Redux actions
-import { updatePlayerName, updateCellState } from '../../redux/actions';
+import { updatePlayerName, updateBoard, updateShipQuantity } from '../../redux/actions';
 // Helper actions
-import { getCurrentShip, getSelectedCells } from '../../helpers/gameLogic';
+import {
+  getCurrentShip,
+  getSelectedCells,
+  isEveryCellFree,
+  setCellsAsSelected,
+  setCellsAsOccupied,
+  decreaseShipQuantity,
+} from '../../helpers/gameLogic';
 // Custom components
 import Board from '../../components/Board/Board';
 import PlayerForm from '../../components/PlayerForm/PlayerForm';
@@ -24,7 +28,8 @@ const propTypes = {
     ships: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   updatePlayerName: PropTypes.func.isRequired,
-  updateCellState: PropTypes.func.isRequired,
+  updateShipQuantity: PropTypes.func.isRequired,
+  updateBoard: PropTypes.func.isRequired,
 };
 
 function Start(props) {
@@ -35,35 +40,30 @@ function Start(props) {
   };
 
   const mouseOverCellHandler = (boardKey, board, x, y) => {
-    // Checking the data for the next ship to positioning
-    const currentShip = getCurrentShip(playerInformation.ships);
-    // If there are not more ships available then exit the function
-    if (!currentShip) {
+    const ship = getCurrentShip(playerInformation.ships);
+    if (!ship) {
       return;
     }
-    // Filtering of the selected cells
-    const selectedCells = getSelectedCells(board, x, y, currentShip.size);
-    // Checking if there is space available and all cells are free
-    if (!every(selectedCells, ['status', 'free']) || selectedCells.length < currentShip.size) {
-      console.log("Can't position current ship here");
+    const selectedCells = getSelectedCells(board, x, y, ship.size);
+    if (!isEveryCellFree(selectedCells, ship.size)) {
       return;
     }
-    console.log('Can position current ship here');
-    // Creation of the new bidimensional array with the hovered cells actives
-    let newBoard = board.flat().map((cell) => ({
-      ...cell,
-      status:
-        cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1 ? 'selected' : 'free',
-      occupiedBy:
-        cell.y === y && cell.x >= x && cell.x <= x + currentShip.size - 1
-          ? currentShip.name
-          : 'water',
-    }));
-    newBoard = chunk(newBoard, 10);
-    props.updateCellState(boardKey, newBoard);
+    const newBoard = setCellsAsSelected(board, x, y, ship);
+    props.updateBoard(boardKey, newBoard);
   };
 
-  const positionShipHandler = (boardKey, boardData, x, y) => {};
+  const clickCellHandler = (boardKey, board, x, y) => {
+    const ship = getCurrentShip(playerInformation.ships);
+    if (!ship) {
+      return;
+    }
+
+    const newBoard = setCellsAsOccupied(board, x, y, ship.size);
+    const newShips = decreaseShipQuantity(playerInformation.ships, ship.name);
+
+    props.updateShipQuantity(newShips);
+    props.updateBoard(boardKey, newBoard);
+  };
 
   return (
     <Container className="h-100">
@@ -71,7 +71,7 @@ function Start(props) {
         <Board
           board={playerBoard}
           mouseover={mouseOverCellHandler}
-          click={positionShipHandler}
+          click={clickCellHandler}
           playerName={playerName}
           playableBoard
         />
@@ -89,4 +89,6 @@ const mapStateToProps = (state) => ({
   playerName: state.players.player.name,
 });
 
-export default connect(mapStateToProps, { updatePlayerName, updateCellState })(Start);
+export default connect(mapStateToProps, { updatePlayerName, updateBoard, updateShipQuantity })(
+  Start,
+);

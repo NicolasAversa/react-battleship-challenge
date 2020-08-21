@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { updateCellState } from '../../redux/actions';
+import { updateBoard } from '../../redux/actions';
 import Board from '../../components/Board/Board';
 
 const propTypes = {
   playerBoard: PropTypes.arrayOf(PropTypes.array).isRequired,
   cpuBoard: PropTypes.arrayOf(PropTypes.array).isRequired,
   playerName: PropTypes.string.isRequired,
-  updateCellState: PropTypes.func.isRequired,
+  updateBoard: PropTypes.func.isRequired,
 };
 
 function Game(props) {
@@ -29,7 +29,7 @@ function Game(props) {
       })),
     );
 
-    props.updateCellState(boardKey, newBoard);
+    props.updateBoard(boardKey, newBoard);
   };
 
   return (
@@ -52,4 +52,4 @@ const mapStateToProps = (state) => ({
   playerName: state.players.player.name,
 });
 
-export default connect(mapStateToProps, { updateCellState })(Game);
+export default connect(mapStateToProps, { updateBoard })(Game);

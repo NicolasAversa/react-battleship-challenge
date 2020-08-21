@@ -21,7 +21,10 @@ function Cell(props) {
   const { x, y, status, boardKey, board, click, mouseover } = props;
 
   return (
-    <Card inset={status === 'selected'} className={`w-100 m-2 position-relative ${styles.card}`}>
+    <Card
+      inset={status === 'selected' || status === 'occupied'}
+      className={`w-100 m-2 position-relative ${styles.card}`}
+    >
       <button
         type="button"
         onClick={() => click(boardKey, board, x, y)}
