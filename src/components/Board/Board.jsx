@@ -10,16 +10,18 @@ const propTypes = {
   playerName: PropTypes.string.isRequired,
   click: PropTypes.func.isRequired,
   mouseover: PropTypes.func,
+  mouseout: PropTypes.func,
 };
 
 const defaultProps = {
   board: [],
   playableBoard: false,
   mouseover: () => {},
+  mouseout: () => {},
 };
 
 function Board(props) {
-  const { board, playableBoard, playerName, click, mouseover } = props;
+  const { board, playableBoard, playerName, click, mouseover, mouseout } = props;
 
   let boardKey = '';
   if (playableBoard) {
@@ -36,6 +38,7 @@ function Board(props) {
           y={cell.y}
           key={cell.id}
           mouseover={mouseover}
+          mouseout={mouseout}
           click={click}
           status={cell.status}
           boardKey={boardKey}
